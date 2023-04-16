@@ -17,6 +17,7 @@ const Home = ({ navigation }) => {
   const [message,setMessage]=useState(true)
   const [contacts,setContacts]=useState()
   const [selectContact,setSelectContact]=useState(false)
+  const [deleteAllContact,setDeleteAllContact]=useState(false)
   const [selectedContact,setSelectedContact]=useState()
   
 
@@ -71,7 +72,7 @@ const Home = ({ navigation }) => {
         <View>
           <View style={{flex:1,flexDirection:'row',justifyContent:'space-between',marginHorizontal:30,marginTop:20}}>
           <Text style={{fontSize:22,}}>User Messages</Text>
-          <Text style={{fontSize:18, color:'red'}}>Clear</Text>
+          <Text style={{fontSize:18, color:'red'}} onPress={()=>setDeleteAllContact(true)}>Clear</Text>
         </View>
           {contacts?.filter(e=>e.status===false).map((ele,index)=>{
             return(
@@ -165,7 +166,25 @@ const Home = ({ navigation }) => {
             <CustomButton
               text="Delete"
               bgColor="#961717"
-              onPress={() => setSelectContact(false)}
+              onPress={() => {
+                  axios({
+                    method: "delete",
+                    url: `http://192.168.163.146:5000/message/${selectedContact._id}`,
+                  }).then(async (response) => {
+                    if (response.data.status) {
+                      try {
+                        setContacts(response.data.message)
+  
+                      } catch (error) {
+                        console.log("Something went wrong, please try again!");
+                      }
+                    } else {
+                      console.log(response.data.msg);
+                    }
+                  });
+                // }
+                setSelectContact(false);
+              }}
               type="primary"
             />
 
@@ -179,6 +198,56 @@ const Home = ({ navigation }) => {
           </View>
         </View>
       )}
+      {deleteAllContact &&
+        <View
+          style={{
+            height: "103%",
+            width: "100%",
+            zIndex: 10,
+            position: "absolute",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
+          }}
+        >
+          <View style={styles.selectContact}>
+            <View>
+              <Text style={{fontSize: 18, fontWeight: "300", marginBottom:25}}>This is to confirm that by pressing <Text style={{fontWeight:'500'}}>Delete All</Text> button, all the content in message section is deleted and you can't retrieve it back.</Text>
+              </View>
+              <View >
+            <CustomButton
+              text="Delete All"
+              onPress={() => {
+                  axios({
+                    method: "delete",
+                    url: `http://192.168.163.146:5000/message`,
+                  }).then(async (response) => {
+                    if (response.data.status) {
+                      try {
+                        setContacts(response.data.message)
+                      } catch (error) {
+                        console.log("Something went wrong, please try again!");
+                      }
+                    } else {
+                      console.log(response.data.msg);
+                    }
+                  });
+                // }
+                setDeleteAllContact(false);
+              }}
+              type="primary"
+            />
+              </View>
+            <CustomButton
+              text="Cancel"
+              bgColor="#C41E3A"
+              onPress={() => setSelectContact(false)}
+              type="primary"
+            />
+          </View>
+        </View>
+      }
     </View>
   );
 };
