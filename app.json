@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "SanthoshAudios",
-    "slug": "SanthoshAudios",
+    "slug": "santhosh-audios",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/favicon.png",
@@ -18,16 +18,34 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "os.rn.expo"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/favicon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "os.rn.expo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development",
+          "devTeam": "91SW8A37CR"
+        }
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "84f036c6-2c19-433d-84f4-4c06798510a5"
+      },
+      "oneSignalAppId": "b78e338f-2dc8-4ded-b596-91ca8729b0f2"
+    },
+    "owner": "janarthanan_t"
   }
 }

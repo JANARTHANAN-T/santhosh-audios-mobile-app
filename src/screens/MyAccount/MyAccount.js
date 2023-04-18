@@ -97,6 +97,9 @@ function MyAccount({ navigation }) {
           </View>
         </View>
         <View>
+        <View>
+
+        </View>
           <Text
             style={{ fontSize: 24, marginHorizontal: 30, marginVertical: 15 }}
           >

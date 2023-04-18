@@ -1,10 +1,14 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { View, Text, Image, StyleSheet, useWindowDimensions, ScrollView, Pressable} from 'react-native'
 import logo from '../../../assets/logo.png'
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 import axios from 'axios'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Constants from 'expo-constants';
+import OneSignal from 'react-native-onesignal';
+OneSignal.setAppId(Constants.manifest.extra.oneSignalAppId)
+
 
 
 const SignIn = ({navigation}) => {
@@ -12,6 +16,18 @@ const SignIn = ({navigation}) => {
   const [userEmail, setUserEmail]= useState('admin@gmail.com')
   const [password, setPassword]= useState('1234')
   const [errorMsg,setErrorMsg]=useState('')
+  const [deviceId,setDeviceId]=useState('')
+
+  
+  useEffect(()=>{
+    const getDeviceID=async()=>{
+        let device= await OneSignal.getDeviceState() 
+        setDeviceId(device.userId)  
+        console.log(deviceId);
+    }
+    getDeviceID()
+  },[])
+
 
   const onLogInPress = async() =>{
     if(userEmail===''&&password===""){
@@ -22,7 +38,7 @@ const SignIn = ({navigation}) => {
     await axios({
         method: 'post',
         url: 'http://192.168.163.146:5000/auth/login',
-        data:{email:userEmail,password},
+        data:{email:userEmail,password,deviceId},
       }).then(async(response) => {
         if(response.data.status){
           try {
