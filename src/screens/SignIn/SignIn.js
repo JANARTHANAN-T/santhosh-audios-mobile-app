@@ -13,8 +13,8 @@ OneSignal.setAppId(Constants.manifest.extra.oneSignalAppId)
 
 const SignIn = ({navigation}) => {
   const {height} = useWindowDimensions()
-  const [userEmail, setUserEmail]= useState('santhoshaudios@gmail.com')
-  const [password, setPassword]= useState('123456')
+  const [userEmail, setUserEmail]= useState('')
+  const [password, setPassword]= useState('')
   const [errorMsg,setErrorMsg]=useState('')
   const [deviceId,setDeviceId]=useState('')
 
