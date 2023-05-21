@@ -22,7 +22,7 @@ const CountEdit = ({ navigation }) => {
     const getCount = async () => {
       await axios({
       method: "get",
-      url: "http://192.168.106.146:5000/viewcount/retrieve",
+      url: "https://api.santhoshaudios.in/viewcount/retrieve",
     }).then(async (response) => {
       if (response.data.status) {
         try {
@@ -42,7 +42,7 @@ const CountEdit = ({ navigation }) => {
   const updateCount = async()=>{
     await axios({
       method: "post",
-      url: "http://192.168.106.146:5000/viewcount/",
+      url: "https://api.santhoshaudios.in/viewcount/",
       data:{visits:parseInt(visits),pageviews:parseInt(pageviews)}
     }).then(async (response) => {
       if (response.data.status) {

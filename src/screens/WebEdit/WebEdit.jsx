@@ -26,7 +26,7 @@ const WebEdit = ({ navigation }) => {
     const getdata=async()=>{
     await axios({
       method: "get",
-      url: "http://192.168.106.146:5000/edit/data",
+      url: "https://api.santhoshaudios.in/edit/data",
     }).then(async (response) => {
       if (response.data.status) {
         try {
@@ -45,7 +45,7 @@ const WebEdit = ({ navigation }) => {
   const saveChanges=async()=>{
     await axios({
       method: "post",
-      url: "http://192.168.106.146:5000/git/push",
+      url: "https://api.santhoshaudios.in/git/push",
       data:{msg:commitMsg}
     }).then(async (response) => {
       if (response.data.status) {

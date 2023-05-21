@@ -46,7 +46,7 @@ const Home = ({ navigation }) => {
     const getCount = async () => {
       await axios({
       method: "get",
-      url: "http://192.168.106.146:5000/viewcount/retrieve",
+      url: "https://api.santhoshaudios.in/viewcount/retrieve",
     }).then(async (response) => {
       if (response.data.status) {
         try {
