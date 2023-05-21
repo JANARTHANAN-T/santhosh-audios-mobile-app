@@ -25,6 +25,9 @@ function MyAccount({ navigation }) {
   const [deleteEmail, setDeleteEmail] = useState("");
   const [deleteID, setDeleteID] = useState("");
   const [ondeleteUser, setOnDeleteUser] = useState(false);
+  const [oldPassword, setOldPassword] = useState(false);
+  const [newPassword, setNewPassword] = useState(false);
+  const [confirm, setConfirmPassword] = useState(false);
 
   useLayoutEffect(() => {
     const getUser = async () => {
@@ -34,9 +37,6 @@ function MyAccount({ navigation }) {
     getUser();
   }, []);
 
-  const onSignUpPress = () => {
-    console.warn("Change Password");
-  };
   const onLogOutPress = () => {
     AsyncStorage.removeItem("authValue");
     navigation.navigate("LogIn");
@@ -44,7 +44,7 @@ function MyAccount({ navigation }) {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://192.168.163.146:5000/auth/user",
+      url: "http://192.168.106.146:5000/auth/user",
     }).then(async (response) => {
       if (response.data.status) {
         try {
@@ -84,7 +84,7 @@ function MyAccount({ navigation }) {
           >
             <Text
               style={{ fontSize: 16, marginTop: 15, color: "blue" }}
-              onPress={onSignUpPress}
+              onPress={()=>navigation.navigate('ChangePassword')}
             >
               Change Password
             </Text>
@@ -97,14 +97,17 @@ function MyAccount({ navigation }) {
           </View>
         </View>
         <View>
-        <View>
-
-        </View>
-          <Text
-            style={{ fontSize: 24, marginHorizontal: 30, marginVertical: 15 }}
-          >
-            All Users
-          </Text>
+          <View style={{ flex: 1, flexDirection:'row', justifyContent:'space-between', alignItems:'baseline' }}>
+            <Text
+              style={{ fontSize: 24, marginHorizontal: 30, marginVertical: 15 }}
+            >
+              All Users
+            </Text>
+            <Text style={{ fontSize: 20, marginHorizontal: 30, marginVertical: 15, color: "blue" }} onPress={()=> navigation.navigate("SignUp")
+            }>
+              Add User
+            </Text>
+          </View>
           {admins
             .filter((a) => user._id !== a._id)
             ?.map((ele, index) => {
@@ -172,7 +175,7 @@ function MyAccount({ navigation }) {
                 if (deleteEmail === deleteUser) {
                   axios({
                     method: "delete",
-                    url: `http://192.168.237.146:5000/auth/${deleteID}`,
+                    url: `https://api.santhoshaudios.in/auth/${deleteID}`,
                   }).then(async (response) => {
                     if (response.data.status) {
                       try {

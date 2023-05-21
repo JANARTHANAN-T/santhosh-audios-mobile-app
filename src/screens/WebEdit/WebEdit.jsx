@@ -4,6 +4,7 @@ import {
   StyleSheet,
   useWindowDimensions,
   ScrollView,
+  Linking
 } from "react-native";
 import React from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -27,26 +28,11 @@ const WebEdit = ({ navigation }) => {
             justifyContent: "center",
           }}
         >
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Home</Text>
+          <View style={styles.analysisCard} >
+            <Text style={{ fontSize: 24 }} onPress={()=>navigation.navigate('HomeEdit')}>Home</Text>
           </View>
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>About</Text>
-          </View>
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Service</Text>
-          </View>
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Works</Text>
+          <View style={styles.analysisCard} >
+            <Text style={{ fontSize: 24 }}  onPress={()=>navigation.navigate('AboutEdit')} >About</Text>
           </View>
         </View>
         <View
@@ -58,10 +44,10 @@ const WebEdit = ({ navigation }) => {
           }}
         >
           <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Gallery</Text>
+            <Text style={{ fontSize: 24 }} onPress={()=>navigation.navigate('ServiceEdit')} >Service</Text>
           </View>
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Contact</Text>
+          <View style={styles.analysisCard} >
+            <Text style={{ fontSize: 24 }} onPress={() => Linking.openURL('http://google.com')} >Gallery</Text>
           </View>
         </View>
         <View
@@ -72,11 +58,11 @@ const WebEdit = ({ navigation }) => {
             justifyContent: "center",
           }}
         >
-          <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Navbar</Text>
+          <View style={styles.analysisCard} >
+            <Text style={{ fontSize: 24 }} onPress={()=>navigation.navigate('ContactEdit')}>Contact</Text>
           </View>
           <View style={styles.analysisCard}>
-            <Text style={{ fontSize: 24 }}>Footer</Text>
+            <Text style={{ fontSize: 24 }}  onPress={()=>navigation.navigate('CountEdit')}>Count</Text>
           </View>
         </View>
         </View>
@@ -97,7 +83,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     padding: 20,
-    height: 130,
+    height: 190,
   },
   heading: {
     flex: 1,

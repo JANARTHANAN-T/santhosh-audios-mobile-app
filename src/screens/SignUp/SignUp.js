@@ -13,7 +13,7 @@ const SignUp = ({navigation}) => {
     const [password, setPassword]= useState('')
     const [confirmPassword, setConfirmPassword]= useState('')
     const [errorMsg,setErrorMsg]=useState('')
-  
+ 
     const onSignUpPress = async() =>{
       AsyncStorage.clear();
       if(userName===''&&userEmail===""&&password===""&&confirmPassword===""){
@@ -23,14 +23,14 @@ const SignUp = ({navigation}) => {
       if(password===confirmPassword){
         await axios({
           method: 'post',
-          url: 'http://192.168.237.146:5000/auth/register',
+          url: 'https://api.santhoshaudios.in/auth/register',
           data:{username:userName,email:userEmail,password},
         }).then(async(response) => {
           if(response.data.status){
             try {
               console.log(response.data.user);
               await AsyncStorage.setItem('authValue',JSON.stringify({...response.data.user}));
-              navigation.navigate('Home')
+              navigation.navigate('MyAccount')
             } catch (error) {
               setErrorMsg('Something went wrong, please try again!')
             }
@@ -49,7 +49,7 @@ const SignUp = ({navigation}) => {
         <View style={[styles.root, {height:height}]}>
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
               <Image source={logo} style={[styles.logo]} resizeMode="contain" />
-                <Text style={styles.title}>Create an account</Text>
+                <Text style={styles.title}>Add an Admin</Text>
               <CustomInput placeholder="User Name" value={userName} setValue={setUserName} />
               <CustomInput placeholder="User Email" value={userEmail} setValue={setUserEmail} />
               <CustomInput placeholder="Set Password" value={password} setValue={setPassword} secureText />
@@ -59,7 +59,7 @@ const SignUp = ({navigation}) => {
               <CustomButton text='Sign Up' onPress={onSignUpPress} type="primary" />
               </View>
             </View>
-            <Text style={{paddingBottom:10}}>Already have an account?  <Text style={styles.logIn} onPress={() => navigation.navigate('LogIn')} >Log In</Text></Text>
+            <View style={{paddingVertical:10, borderTopWidth:.5, borderTColor:'gray', width:'100%'}}><Text style={{textAlign:'center', fontSize:16,color:'gray'}} onPress={()=> navigation.navigate("MyAccount")}>Go Back to My Account</Text></View>
         </View>
       </ScrollView>
     )

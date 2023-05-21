@@ -5,7 +5,7 @@ import {
   useWindowDimensions,
   ScrollView,
 } from "react-native";
-import React,{useState, useLayoutEffect} from "react";
+import React,{useState, useLayoutEffect,useEffect} from "react";
 import Entypo from "@expo/vector-icons/Entypo";
 import BottomNavigation from "../../../src/components/BottomNavigation";
 import CustomButton from '../../components/CustomButton'
@@ -16,6 +16,7 @@ const Home = ({ navigation }) => {
   const { height } = useWindowDimensions();
   const [message,setMessage]=useState(true)
   const [contacts,setContacts]=useState()
+  const [count,setCount]=useState({})
   const [selectContact,setSelectContact]=useState(false)
   const [deleteAllContact,setDeleteAllContact]=useState(false)
   const [selectedContact,setSelectedContact]=useState()
@@ -25,12 +26,11 @@ const Home = ({ navigation }) => {
     const getMessage = async () => {
       await axios({
       method: "get",
-      url: "http://192.168.163.146:5000/message",
+      url: "http://192.168.106.146:5000/message",
     }).then(async (response) => {
       if (response.data.status) {
         try {
           setContacts(response.data.messages);
-          console.log(contacts)
         } catch (error) {
           console.warn("Something went wrong, please try again!");
         }
@@ -42,6 +42,26 @@ const Home = ({ navigation }) => {
     getMessage();
   }, []);
 
+  useEffect(() => {
+    const getCount = async () => {
+      await axios({
+      method: "get",
+      url: "http://192.168.106.146:5000/viewcount/retrieve",
+    }).then(async (response) => {
+      if (response.data.status) {
+        try {
+          await setCount(JSON.parse(response.data.json));
+        } catch (error) {
+          console.warn("Something went wrong, please try again!");
+        }
+      } else {
+        console.warn(response.data.msg);
+      }
+    });
+    };
+    getCount();
+  }, []);
+
   return (
     <View style={{ height: height }}>
       <ScrollView style={{ marginBottom: 60 }}>
@@ -51,14 +71,14 @@ const Home = ({ navigation }) => {
         </View>
         <View style={{flex:1,flexDirection:'row',alignItems:'center',justifyContent:'center'}}>
           <View style={styles.analysisCard}>
-            <Text style={{fontSize:22,width:124}}>CURRENT</Text>
-            <Text style={{ fontSize: 16 }}>March 2023</Text>
-            <Text style={{ fontSize: 24, marginVertical: 10 }}>30</Text>
+            <Text style={{fontSize:22,width:124}}>Visit Count</Text>
+            {/* <Text style={{ fontSize: 16 }}></Text> */}
+            <Text style={{ fontSize: 32, marginVertical: 10 }}>{count.visits}</Text>
           </View>
           <View style={styles.analysisCard}>
-            <Text style={{fontSize:22,width:124}}>MAXIMUM</Text>
-            <Text style={{ fontSize: 16 }}>January 2023</Text>
-            <Text style={{ fontSize: 24, marginVertical: 10 }}>30</Text>
+            <Text style={{fontSize:22,width:124}}>Page View</Text>
+            {/* <Text style={{ fontSize: 16 }}>January 2023</Text> */}
+            <Text style={{ fontSize: 32, marginVertical: 10 }}>{count.pageviews}</Text>
           </View>
         </View>
         <View style={styles.btnWrapper}>
@@ -74,7 +94,9 @@ const Home = ({ navigation }) => {
           <Text style={{fontSize:22,}}>User Messages</Text>
           <Text style={{fontSize:18, color:'red'}} onPress={()=>setDeleteAllContact(true)}>Clear</Text>
         </View>
-          {contacts?.filter(e=>e.status===false).map((ele,index)=>{
+        {message ?
+        <View>
+          {contacts?.filter(e=>(e.status===false && e.isquotation===false)).map((ele,index)=>{
             return(
           <View style={styles.userCard} key={index}>
             <View>
@@ -95,7 +117,7 @@ const Home = ({ navigation }) => {
           </View>
             )
           })}
-          {contacts?.filter(e=>e.status===true).map((ele,index)=>{
+          {contacts?.filter(e=>(e.status===true && e.isquotation===false)).map((ele,index)=>{
             return(
           <View style={[styles.userCard,{backgroundColor: "#dbdad7",}]} key={index}>
             <View>
@@ -116,6 +138,52 @@ const Home = ({ navigation }) => {
           </View>
             )
           })}
+          </View>:
+          <View>
+          {contacts?.filter(e=>(e.status===false && e.isquotation===true)).map((ele,index)=>{
+            return(
+          <View style={styles.userCard} key={index}>
+            <View>
+              <Text style={{fontSize:17,fontWeight:"500"}}>{ele.name}</Text>
+              <Text>{ele.email}</Text>
+            </View>
+            <View>
+            <AntDesign
+                      name="right"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        setSelectedContact(ele)
+                        setSelectContact(true);
+                      }}
+                    />
+            </View>
+          </View>
+            )
+          })}
+          {contacts?.filter(e=>(e.status===true && e.isquotation===true)).map((ele,index)=>{
+            return(
+          <View style={[styles.userCard,{backgroundColor: "#dbdad7",}]} key={index}>
+            <View>
+              <Text style={{fontSize:17,fontWeight:"500"}}>{ele.name}</Text>
+              <Text>{ele.email}</Text>
+            </View>
+            <View>
+            <AntDesign
+                      name="right"
+                      size={28}
+                      color="black"
+                      onPress={() => {
+                        setSelectedContact(ele)
+                        setSelectContact(true);
+                      }}
+                    />
+            </View>
+          </View>
+            )
+          })}
+          </View>
+        }
         </View>
       </ScrollView>
       <BottomNavigation navigation={navigation} />
@@ -133,11 +201,15 @@ const Home = ({ navigation }) => {
           }}
         >
           <View style={styles.selectContact}>
+          {console.log(selectContact)}
             <View>
               <Text style={{fontSize: 20, fontWeight: "300", marginBottom:5}}><Text style={{fontWeight:'400'}}>Name:</Text> {selectedContact.name}</Text>
               <Text style={{fontSize: 20, fontWeight: "300", marginBottom:5}}><Text style={{fontWeight:'400'}}>Email:</Text> {selectedContact.email}</Text>
               <Text style={{fontSize: 20, fontWeight: "300", marginBottom:5}}><Text style={{fontWeight:'400'}}>Mobile:</Text> {selectedContact.phonenumber}</Text>
+              {!selectedContact.isquotation ?
               <Text style={{fontSize: 20, fontWeight: "300", marginBottom:5}}><Text style={{fontWeight:'400',marginBottom:5}}>Message:</Text>{"\n"}{selectedContact.message}{"\n"}</Text>
+               : <Text style={{fontSize:18, marginVertical:10}}>Please do refer your mail for more detail</Text>
+                            }
               </View>
               <View >
             <CustomButton
@@ -145,7 +217,7 @@ const Home = ({ navigation }) => {
               onPress={() => {
                   axios({
                     method: "put",
-                    url: `http://192.168.163.146:5000/message/${selectedContact._id}`,
+                    url: `https://api.santhoshaudios.in/message/${selectedContact._id}`,
                   }).then(async (response) => {
                     if (response.data.status) {
                       try {
@@ -169,7 +241,7 @@ const Home = ({ navigation }) => {
               onPress={() => {
                   axios({
                     method: "delete",
-                    url: `http://192.168.163.146:5000/message/${selectedContact._id}`,
+                    url: `https://api.santhoshaudios.in/message/${selectedContact._id}`,
                   }).then(async (response) => {
                     if (response.data.status) {
                       try {
@@ -221,7 +293,7 @@ const Home = ({ navigation }) => {
               onPress={() => {
                   axios({
                     method: "delete",
-                    url: `http://192.168.163.146:5000/message`,
+                    url: `https://api.santhoshaudios.in/message`,
                   }).then(async (response) => {
                     if (response.data.status) {
                       try {
@@ -242,7 +314,7 @@ const Home = ({ navigation }) => {
             <CustomButton
               text="Cancel"
               bgColor="#C41E3A"
-              onPress={() => setSelectContact(false)}
+              onPress={() => setDeleteAllContact(false)}
               type="primary"
             />
           </View>
