@@ -28,7 +28,7 @@ const ContactEdit = ({ navigation, route }) => {
   const updateContent = async() =>{
     await axios({
       method: "put",
-      url: "http://192.168.106.146:5000/edit/data",
+      url: "https://api.santhoshaudios.in/edit/data",
       data:{key:"Contact",value:{Email1,Email2,WhatsApp1,WhatsApp2,Instagram,AddressArea,AddressDistrict,AddressStreet}}
     }).then(async (response) => {
       if (response.data.status) {

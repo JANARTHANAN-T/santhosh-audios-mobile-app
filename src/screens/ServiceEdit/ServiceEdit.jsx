@@ -79,7 +79,7 @@ const ServiceEdit = ({ navigation, route }) => {
   const updateContent = async() =>{
     await axios({
       method: "put",
-      url: "http://192.168.106.146:5000/edit/data",
+      url: "https://api.santhoshaudios.in/edit/data",
       data:{key:"Services",value:[{Title:"Car Audios",Description:[CarAudios1,CarAudios2,CarAudios3,CarAudios4,CarAudios5,CarAudios6,CarAudios7,CarAudios8,CarAudios9,CarAudios10]},{Title:"Car Accessories",Description:[CarAccessories1,CarAccessories2,CarAccessories3,CarAccessories4,CarAccessories5,CarAccessories6,CarAccessories7,CarAccessories8,CarAccessories9,CarAccessories10]},{Title:"Home Audios",Description:[HomeAudios1,HomeAudios2,HomeAudios3,HomeAudios4,HomeAudios5,HomeAudios6,HomeAudios7,HomeAudios8,HomeAudios9,HomeAudios10]},{Title:"Van/Bus Audios",Description:[VanBusAudios1,VanBusAudios2,VanBusAudios3,VanBusAudios4,VanBusAudios5,VanBusAudios6,VanBusAudios7,VanBusAudios8,VanBusAudios9,VanBusAudios10]},{Title:"Van/Bus Lighting",Description:[VanBusLighting1,VanBusLighting2,VanBusLighting3,VanBusLighting4,VanBusLighting5,VanBusLighting6,VanBusLighting7,VanBusLighting8,VanBusLighting9,VanBusLighting10]},{Title:"Other Services",Description:[OtherServices1,OtherServices2,OtherServices3,OtherServices4,OtherServices5,OtherServices6,OtherServices7,OtherServices8,OtherServices9,OtherServices10]}]}
     }).then(async (response) => {
       if (response.data.status) {

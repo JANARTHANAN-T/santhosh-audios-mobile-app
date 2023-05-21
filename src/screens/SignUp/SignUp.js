@@ -29,7 +29,6 @@ const SignUp = ({navigation}) => {
           if(response.data.status){
             try {
               console.log(response.data.user);
-              await AsyncStorage.setItem('authValue',JSON.stringify({...response.data.user}));
               navigation.navigate('MyAccount')
             } catch (error) {
               setErrorMsg('Something went wrong, please try again!')
@@ -56,7 +55,7 @@ const SignUp = ({navigation}) => {
               <CustomInput placeholder="Confirm Password" value={confirmPassword} setValue={setConfirmPassword} secureText />
               <Text style={{color:'red'}}>{errorMsg}</Text>
               <View style={{marginVertical:30}}>
-              <CustomButton text='Sign Up' onPress={onSignUpPress} type="primary" />
+              <CustomButton text='Add Account' onPress={onSignUpPress} type="primary" />
               </View>
             </View>
             <View style={{paddingVertical:10, borderTopWidth:.5, borderTColor:'gray', width:'100%'}}><Text style={{textAlign:'center', fontSize:16,color:'gray'}} onPress={()=> navigation.navigate("MyAccount")}>Go Back to My Account</Text></View>

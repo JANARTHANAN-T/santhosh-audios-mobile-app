@@ -23,7 +23,7 @@ const HomeEdit = ({ navigation, route }) => {
   const updateContent = async() =>{
     await axios({
       method: "put",
-      url: "http://192.168.106.146:5000/edit/data",
+      url: "https://api.santhoshaudios.in/edit/data",
       data:{key:"Home",value:{Title:title,Quotes:[quote1,quote2,quote3]}}
     }).then(async (response) => {
       if (response.data.status) {

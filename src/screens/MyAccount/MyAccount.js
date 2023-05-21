@@ -100,10 +100,12 @@ function MyAccount({ navigation }) {
             >
               All Users
             </Text>
+            {user.isadmin &&
             <Text style={{ fontSize: 20, marginHorizontal: 30, marginVertical: 15, color: "blue" }} onPress={()=> navigation.navigate("SignUp")
             }>
               Add User
             </Text>
+            }
           </View>
           {admins
             .filter((a) => user._id !== a._id)
