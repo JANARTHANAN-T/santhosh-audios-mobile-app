@@ -12,13 +12,27 @@ import axios from "axios";
 import CustomInput from '../../components/CustomInput'
 import CustomButton from '../../components/CustomButton'
 
-const HomeEdit = ({ navigation }) => {
+const HomeEdit = ({ navigation, route }) => {
   const { height } = useWindowDimensions();
-  const [title,setTitle]=useState('')
-  const [quote1,setQuote1]=useState('')
-  const [quote2,setQuote2]=useState('')
-  const [quote3,setQuote3]=useState('')
+  const [title,setTitle]=useState(route.params.data.Title)
+  const [quote1,setQuote1]=useState(route.params.data.Quotes[0])
+  const [quote2,setQuote2]=useState(route.params.data.Quotes[1])
+  const [quote3,setQuote3]=useState(route.params.data.Quotes[2])
+  const [onUpdate,setOnUpdate]=useState(false)
 
+  const updateContent = async() =>{
+    await axios({
+      method: "put",
+      url: "http://192.168.106.146:5000/edit/data",
+      data:{key:"Home",value:{Title:title,Quotes:[quote1,quote2,quote3]}}
+    }).then(async (response) => {
+      if (response.data.status) {
+        navigation.navigate('WebEdit')
+      } else {
+        console.warn(response.data.msg);
+      }
+    });
+  }
   
 
   return (
@@ -46,11 +60,42 @@ const HomeEdit = ({ navigation }) => {
         <CustomInput placeholder="Quote 3" value={quote3} setValue={setQuote3} />
         </View>
         <View style={{margin:30}}>
-            <CustomButton text='Save Changes'  type="primary" />
+            <CustomButton text='Save Changes' onPress={()=>setOnUpdate(true)}  type="primary" />
         </View>
         </View>
       </ScrollView>
       <BottomNavigation navigation={navigation} />
+      {onUpdate && (
+        <View
+          style={{
+            height: "103 %",
+            width: "100%",
+            zIndex: 10,
+            position: "absolute",
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "rgba(52, 52, 52, 0.8)",
+          }}
+        >
+          <View style={styles.deleteUserCard}>
+            <Text style={{ fontSize: 20, fontWeight: "300", marginBottom: 20 }}>
+              This is to confirm that on pressing the below "Update" button will change the content and never be retrieve preview content.
+            </Text>
+            <CustomButton
+              text="Update"
+              onPress={updateContent}
+              type="primary"
+            />
+            <CustomButton
+              text="Close"
+              bgColor="#C41E3A"
+              onPress={() => setOnUpdate(false)}
+              type="primary"
+            />
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -63,6 +108,13 @@ const styles = StyleSheet.create({
     fontSize: 64,
     justifyContent: "flex-start",
     margin: 20,
+  },
+  deleteUserCard: {
+    marginHorizontal: 50,
+    shadowColor: "black",
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 20,
   },
 });
 

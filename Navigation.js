@@ -10,6 +10,7 @@ import NewPassword from './src/screens/NewPassword/NewPassword';
 import ForgetPassword from './src/screens/ForgetPassword/ForgetPassword';
 import OTPEnter from './src/screens/OTPEnter/OTPEnter';
 import ChangePassword from './src/screens/ChangePassword/ChangePassword';
+import AuthChangePassword from './src/screens/AuthChangePassword/AuthChangePassword';
 import HomeEdit from './src/screens/HomeEdit/HomeEdit';
 import AboutEdit from './src/screens/AboutEdit/AboutEdit';
 import ServiceEdit from './src/screens/ServiceEdit/ServiceEdit';
@@ -31,6 +32,7 @@ function Navigation() {
         <Stack.Screen name="ForgotPassword" component={ForgetPassword} />
         <Stack.Screen name="OTPEnter" component={OTPEnter} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
+        <Stack.Screen name="AuthChangePassword" component={AuthChangePassword} />
         <Stack.Screen name="HomeEdit" component={HomeEdit} />
         <Stack.Screen name="AboutEdit" component={AboutEdit} />
         <Stack.Screen name="ServiceEdit" component={ServiceEdit} />

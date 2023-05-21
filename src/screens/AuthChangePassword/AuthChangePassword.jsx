@@ -6,7 +6,7 @@ import CustomButton from '../../components/CustomButton'
 import axios from 'axios'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ChangePassword = ({navigation}) => {
+const ChangePassword = ({navigation,route}) => {
   const {height} = useWindowDimensions()
   const [password, setPassword]= useState('')
   const [confirmPassword,setConfirmPassword]=useState('')
@@ -25,17 +25,15 @@ const ChangePassword = ({navigation}) => {
     if(password!=='' && password===confirmPassword){
     await axios({
       method: "post",
-      url: `https://api.santhoshaudios.in/auth/changepass/${user._id}`,
-      data:{password},
+      url: `https://api.santhoshaudios.in/auth/forgotpass/`,
+      data:{email:route.params.email,password},
     }).then(async (response) => {
       if (response.data.status) {
         try {
-          navigation.navigate('MyAccount')
+          console.log(response.data.user);
+          navigation.navigate('LogIn')
         } catch (error) {
-          setErrorMsg("Something went wrong, please try again!");
-          setTimeout(()=>{
-            setErrorMsg('')
-          },3000)
+          setErrorMsg('Something went wrong, please try again!')
         }
       } else {
         setErrorMsg(response.data.msg);

@@ -13,8 +13,8 @@ OneSignal.setAppId(Constants.manifest.extra.oneSignalAppId)
 
 const SignIn = ({navigation}) => {
   const {height} = useWindowDimensions()
-  const [userEmail, setUserEmail]= useState('admin@gmail.com')
-  const [password, setPassword]= useState('1234')
+  const [userEmail, setUserEmail]= useState('santhoshaudios@gmail.com')
+  const [password, setPassword]= useState('123456')
   const [errorMsg,setErrorMsg]=useState('')
   const [deviceId,setDeviceId]=useState('')
 
@@ -37,7 +37,7 @@ const SignIn = ({navigation}) => {
 
     await axios({
         method: 'post',
-        url: 'http://192.168.106.146:5000/auth/login',
+        url: 'https://api.santhoshaudios.in/auth/login',
         data:{email:userEmail,password,deviceId},
       }).then(async(response) => {
         if(response.data.status){

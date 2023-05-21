@@ -25,9 +25,6 @@ function MyAccount({ navigation }) {
   const [deleteEmail, setDeleteEmail] = useState("");
   const [deleteID, setDeleteID] = useState("");
   const [ondeleteUser, setOnDeleteUser] = useState(false);
-  const [oldPassword, setOldPassword] = useState(false);
-  const [newPassword, setNewPassword] = useState(false);
-  const [confirm, setConfirmPassword] = useState(false);
 
   useLayoutEffect(() => {
     const getUser = async () => {
@@ -44,7 +41,7 @@ function MyAccount({ navigation }) {
   useEffect(() => {
     axios({
       method: "get",
-      url: "http://192.168.106.146:5000/auth/user",
+      url: "https://api.santhoshaudios.in/auth/user",
     }).then(async (response) => {
       if (response.data.status) {
         try {

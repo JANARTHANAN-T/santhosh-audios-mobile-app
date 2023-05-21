@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
     const getMessage = async () => {
       await axios({
       method: "get",
-      url: "http://192.168.106.146:5000/message",
+      url: "https://api.santhoshaudios.in/message",
     }).then(async (response) => {
       if (response.data.status) {
         try {

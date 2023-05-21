@@ -7,8 +7,32 @@ import axios from 'axios'
 
 const ForgetPassword = ({navigation}) => {
     const {height} = useWindowDimensions()
-    const [userEmail, setUserEmail]= useState('admin@gmail.com')
+    const [userEmail, setUserEmail]= useState('')
     const [errorMsg,setErrorMsg]=useState('')
+    const generateOTP = async()=>{
+      setErrorMsg("Wait for OTP to be send to your mail")
+      await axios({
+        method: "post",
+        url: `https://api.santhoshaudios.in/auth/genotp/`,
+        data:{email:userEmail},
+      }).then(async (response) => {
+        if (response.data.status) {
+          try {
+            navigation.navigate('OTPEnter',{email:userEmail})
+          } catch (error) {
+            setErrorMsg("Something went wrong, please try again!");
+            setTimeout(()=>{
+              setErrorMsg('')
+            },3000)
+          }
+        } else {
+          setErrorMsg(response.data.msg);
+          setTimeout(()=>{
+            setErrorMsg('')
+          },3000)
+        }
+      });
+    }
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={[styles.root, {height:height}]}>
@@ -17,7 +41,7 @@ const ForgetPassword = ({navigation}) => {
             <CustomInput placeholder="Enter Email" value={userEmail} setValue={setUserEmail} />
             <Text style={{color:'red'}}>{errorMsg}</Text>
             <View style={{marginVertical:30}}>
-            <CustomButton text='Send OTP'  type="primary" onPress={()=>navigation.navigate('OTPEnter')} />
+            <CustomButton text='Send OTP'  type="primary" onPress={generateOTP} />
             </View>
           </View>
       </View>
